@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace Project
 {
+    [QueryProperty(nameof(Movie),"Movie")]
+    public partial class MovieDetailPage : ContentPage;
+
     public class Movie
     {
+        public Movie MovieProperty { get; set; }
+
         public string title { get; set; }
         public int year { get; set; }
         public List<string> genre { get; set; }

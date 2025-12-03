@@ -27,10 +27,10 @@ namespace Project
             }
 
         }
-        private async Task selectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void selectionChanged(object sender,SelectionChangedEventArgs e)
         {
             if (e.CurrentSelection.FirstOrDefault() is Movie selectedMovie) {
-                var papameters = new Dictionary<string, object>
+                var parameters = new Dictionary<string, object>
             {
                 {"Movie" , selectedMovie}
         };
