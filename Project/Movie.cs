@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    [QueryProperty(nameof(Movie),"Movie")]
+    [QueryProperty(nameof(Movie), "Movie")]
     public partial class MovieDetailPage : ContentPage;
 
     public class Movie

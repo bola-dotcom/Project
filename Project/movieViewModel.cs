@@ -24,22 +24,44 @@ namespace Project
         }
 
         //this is the list of movies
+        private List<Movie> allMovies = new List<Movie>();
         //it adds it to the collectionView
         public ObservableCollection<Movie> Movies { get; set; } = new ObservableCollection<Movie>();
 
+        private string searchMovie;
+        public string SearchMovie
+        {
+            get => searchMovie;
+            set
+            {
+                searchMovie = value;
+                OnPropertyChanged(nameof(SearchMovie));
+                FilterMovie();
+            }
+        }
+
+        public Command<string> SearchCommand { get; set; }
+
+        public movieViewModel()
+        {
+            SearchCommand = new Command<string>((text) =>
+        {
+            SearchMovie = text;
+        });
+        }
         //this stores the selected movie by the user
         private Movie _selectedMovie;
-        public Movie selectedMovie
+        public Movie SelectedMovie
         {
             get => _selectedMovie;
             set
             {
                 _selectedMovie = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedMovie));
             }
         }
         //this stores the name of the user
-        private string _Name = "Your namea";
+        private string _Name = "Your name";
         public string Name
         {
             get => _Name;
@@ -51,12 +73,14 @@ namespace Project
         }
 
 
+
         public async void downloadFile()
         {
             //if this is the first time the application is opened
 
             //gets the link into the response variable
             var response = await _httpClient.GetAsync("https://raw.githubusercontent.com/DonH-ITS/jsonfiles/refs/heads/main/moviesemoji.json");
+
 
 
             if (response == null)
@@ -71,6 +95,7 @@ namespace Project
                 //deserializes the content into the texts variable
                 var texts = JsonSerializer.Deserialize<List<Movie>>(text);
                 Movies.Clear();
+                EnterMovies(texts);
                 //each film in the texts list and call it film
                 foreach (var film in texts)
                     // Console.WriteLine(film.title);
@@ -78,19 +103,50 @@ namespace Project
                     {
                         title = film.title,
                         year = film.year,
-                        genre =film.genre,
+                        genre = film.genre,
                         director = film.director,
                         rating = film.rating,
                         emoji = film.emoji
                     });
-               
+
             }
         }
 
+        public void EnterMovies(List<Movie> movieList)
+        {
+            allMovies = movieList;
+            Movies.Clear();
+            foreach (var movie in allMovies)
+                Movies.Add(movie);
+        }
+        private void FilterMovie()
+        {
+
+            if (string.IsNullOrWhiteSpace(SearchMovie))
+            {
+                Movies.Clear();
+                foreach (var movie in allMovies)
+                    Movies.Add(movie);
+                return;
+            }
+            var filtered = allMovies
+ .Where(m =>
+m.title.Contains(SearchMovie, StringComparison.OrdinalIgnoreCase) ||
+             (m.genre != null && m.genre.Any(g => g.Contains(SearchMovie, StringComparison.OrdinalIgnoreCase))) ||
+               m.year.ToString().Contains(SearchMovie)
+               )
+               . ToList();
+
+            Movies.Clear();
+            foreach (var movie in filtered)
+                Movies.Add(movie);
+
+        }
+    }
 
      
     }
-}
+
 
     
 

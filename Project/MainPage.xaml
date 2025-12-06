@@ -10,6 +10,9 @@
                 <Label Text="Name:"/>
                 <Entry x:Name="NameBox" Text="{Binding Name}"/>
 
+             <SearchBar Text="{Binding SearchMovie}"
+                        SearchCommand="{Binding SearchCommand}"
+                        SearchCommandParameter = "{Binding Text, Source = {RelativeSource Self}}"/>
             <CollectionView ItemsSource="{Binding Movies}"
 SelectionMode="Single"
 SelectedItem="{Binding SelectedMovie}"

@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Project.MovieDetailPage"
              Title="MovieDetailPage">
+    
     <VerticalStackLayout>
+       
         <Label Text="{Binding title}" FontSize="Medium" FontAttributes="Bold"/>
         <Label Text="{Binding emoji}" FontSize="Small"/>
         <Label Text="{Binding year}" FontSize="Small"/>
