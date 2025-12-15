@@ -72,32 +72,7 @@ namespace Project
             }
         }
 
-        private string _search;
-        public string Search
-        {
-            get => _search;
-            set
-            {
-                _search = value;
-                OnPropertyChanged(nameof(Search));
-                FilterMovie();
-            }
-        }
-        public movieViewModel()
-        {
-            SearchCommand = new Command<string>((text) =>
-            {
-                SearchMovie = text;
-            });
-        }
-        public void LoadMovies(List<Movie> movieList)
-        {
-            allMovies = movieList;
-            Movies.Clear();
-            foreach (var movie in allMovies)
-                Movies.Add(movie);
-        }
-
+    
 
         public async void downloadFile()
         {
@@ -136,27 +111,7 @@ namespace Project
 
             }
         }
-        private void FilterMovies()
-        {
-            if(string.IsNullOrWhiteSpace(SearchText))
-            {
-                Movies.Clear();
-                foreach (var movie in allMovies)
-                    Movies.Add(movie);
-
-                return;
-            }
-            var filtered = allMovies.Where(m => 
-            m.title.Contains(SearchMovie, StringComparison.OrdinalIgnoreCase) ||
-            m.year.ToString().Contains(SearchMovie)  ||
-            m.director.Contains(SearchMovie, StringComparison.OrdinalIgnoreCase) ||
-            m.genre.Any(g=> g.Contains(SearchMovie, StringComparison.OrdinalIgnoreCase))
-            ).ToList();
-            Movies.Clear();
-            foreach (var movie in filtered)
-                Movies.Add(movie);
-        }
-
+    
         public void EnterMovies(List<Movie> movieList)
         {
             allMovies = movieList;
